@@ -8,3 +8,10 @@ services:
         ports:
           - "80:8080"
         command: ./run.sh
+    redis:
+        image: redis
+    redis_commander:
+        image: tenstartups/redis-commander
+        command: --redis-host redis
+        ports:
+          - "8081:8081"
