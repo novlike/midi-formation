@@ -30,6 +30,7 @@ framework:
     assets: ~
     php_errors:
         log: true
+    lock: 'redis://redis'
 
 # Twig Configuration
 twig:

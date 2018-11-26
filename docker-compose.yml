@@ -5,6 +5,8 @@ services:
         working_dir: /app
         volumes:
           - ./:/app
+        links:
+          - redis:redis
         ports:
           - "80:8080"
         command: ./run.sh
@@ -13,5 +15,7 @@ services:
     redis_commander:
         image: tenstartups/redis-commander
         command: --redis-host redis
+        links:
+          - redis:redis
         ports:
           - "8081:8081"
