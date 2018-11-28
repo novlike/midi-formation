@@ -16,11 +16,17 @@ use Symfony\Component\Lock\Factory;
 
 class ProductCommand extends Command
 {
+    /**
+     * @var Factory $lockFactory
+     */
     private $lockFactory;
 
+    /**
+     * @var string rootDir
+     */
     private $dir;
 
-    public function __construct(Factory $lockFactory, array $dir = null)
+    public function __construct(Factory $lockFactory)
     {
         $this->lockFactory = $lockFactory;
         $this->dir = __DIR__ . '/../../..';
@@ -33,13 +39,19 @@ class ProductCommand extends Command
              ->setDescription('test symfony component lock');
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int|null|void
+     */
     public function execute(InputInterface $input, OutputInterface $output)
     {
         echo 'execute'.PHP_EOL;
-        $lock = $this->lockFactory->createLock('verrou');
+        $lock = $this->lockFactory->createLock('lock');
+
         while (true) {
             if ($lock->acquire()) {
-                echo 'verrou acquis'.PHP_EOL;
+                echo 'lock acquired'.PHP_EOL;
                 $finder = new Finder();
                 $finder->name('*.txt')->depth(0)->files()->in($this->dir);
 
@@ -48,11 +60,11 @@ class ProductCommand extends Command
                     $output->write(PHP_EOL);
                     sleep(3);
                 }
-                echo 'libération du verrou'.PHP_EOL;
                 $lock->release();
+                echo 'release lock'.PHP_EOL;
                 break;
             } else {
-                echo 'lock oqp'.PHP_EOL;
+                echo 'lock occupied'.PHP_EOL;
                 sleep(1);
             }
         }
