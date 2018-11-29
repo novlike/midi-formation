@@ -1,0 +1,7 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{ render_esi(controller('AppBundle:AtelierCache:lastArticle')) }}
+    <br/>
+    {{ render_esi(controller('AppBundle:AtelierCache:uniqId')) }}
+{% endblock %}
