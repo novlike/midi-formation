@@ -8,7 +8,7 @@ services:
         links:
           - redis:redis
         ports:
-          - "81:8081"
+          - "80:8080"
         command: ./run.sh
     redis:
         image: redis
