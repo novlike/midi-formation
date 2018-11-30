@@ -71,19 +71,31 @@ swiftmailer:
     spool: { type: memory }
 
 sensio_framework_extra:
-   router:
+    router:
         annotations: false
+    cache:
+        annotations: true
 
 fos_http_cache:
     cache_control:
         defaults:
             overwrite: false
         rules:
+        #- match:
+        #      attributes: { _controller: ^AppBundle\\Controller\\CacheController::.* }
+        #  headers:
+        #      cache_control:
+        #          public: true
+        #          max_age: 15
+        #          s_maxage: 30
+        #      last_modified: "-1 hour"
+
         - match:
-              attributes: { _controller: ^AppBundle\\Controller\\CacheController::.* }
+              path: ^/articles
           headers:
+              overwrite: false # means that cache from controller will be taken; true => cache from config
               cache_control:
                   public: true
-                  max_age: 15
-                  s_maxage: 30
-              last_modified: "-1 hour"
+                  max_age: 500
+                  s_maxage: 3600
+              etag: true

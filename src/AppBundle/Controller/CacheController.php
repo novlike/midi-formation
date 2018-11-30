@@ -38,4 +38,31 @@ class CacheController extends Controller
     {
         return (new Response(uniqid()))->setSharedMaxAge(86400);
     }
+
+    /**
+     * @Route("/articles", name="some_articles")
+     * @Cache(smaxage="10")
+     * @return Response
+     */
+    public function someArticleAction()
+    {
+        /* Avec annotation, overwirte ne fonctionne pas car cela passe par eventListener et config également.
+         L'eventListener de config a plus de poids que celui de l'annotation alors si on veut que
+         un controlleur utilise son propre système de cache, faut écrire à l'interieur de la méthode.
+
+         bin/console debug:event-dispatcher kernel.response permet de voir la liste des eventListener et leur poids
+        */
+
+        //return $this->render('articles/index.html.twig');
+        return (new Response(sprintf('cache generated at %s', date('H:i:s'))))->setSharedMaxAge(10);
+    }
+
+    /**
+     * @Route("/somethingelse", name="not_some_article")
+     * @return Response
+     */
+    public function notSomeArticleAction()
+    {
+        return (new Response(sprintf('cache generated at %s', date('H:i:s'))));
+    }
 }
