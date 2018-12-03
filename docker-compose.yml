@@ -5,6 +5,7 @@ services:
         working_dir: /app
         volumes:
           - ./:/app
+          - $HOME/.composer:/root/.composer
         links:
           - redis:redis
         ports:
